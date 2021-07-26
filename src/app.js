@@ -102,7 +102,7 @@ function onImageOpenClick(event) {
 return
   }
   
-  openModal();
+  onOpenModal();
 
 const modalImgLink = event.target.dataset.source;
 const modalImgAlt = event.target.alt;
@@ -112,14 +112,32 @@ modalImg.src = modalImgLink;
 }
 
 
-function openModal(){
+function onOpenModal(){
+  window.addEventListener('keydown', onEscKeyPress)
   lightboxContainer.classList.add("is-open")
 };
 
 const modalCloseBtn = document.querySelector('.lightbox__button');
-modalCloseBtn.addEventListener('click', onModalCloseBtnClick);
+modalCloseBtn.addEventListener('click', onCloseModal);
 
-function onModalCloseBtnClick(){
-lightboxContainer.classList.remove("is-open");
-modalImg.src = "";
- };
+
+function onCloseModal(){
+ lightboxContainer.classList.remove("is-open");
+ modalImg.src = "";
+};
+
+
+const overlay = document.querySelector('.lightbox__overlay');
+overlay.addEventListener('click', onOverlayClick);
+
+function onOverlayClick(e){
+ if(e.target === e.currentTarget){
+  onCloseModal()
+}
+};
+
+function onEscKeyPress(e){
+  if(e.code === 'Escape'){
+    onCloseModal()
+  }
+};
